@@ -7,6 +7,7 @@ dotenv.config();
 
 // routes
 import authRoutes from "./routes/User.js";
+import postRoutes from "./routes/Post.js";
 
 const app = express();
 const port = 5000;
@@ -31,6 +32,7 @@ mongoose
   .catch((err) => console.log("Database cant connect", err));
 
 app.use("/api", authRoutes);
+app.use("/api/post", postRoutes);
 
 app.listen(port, () => {
   console.log("Server running on port", port);

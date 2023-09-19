@@ -4,37 +4,20 @@ import createSecretToken from "../utils/token.js";
 
 const maxAge = 3 * 24 * 60 * 60;
 
-// handle error
-function handleErrors(err) {
-  // console.log(err.message);
-
-  let errors = { username: "", password: "" };
-
-  if (err.message == "Username not found") {
-    errors.username = "Username not found or password incorrect";
-  }
-
-  if (err.message == "Password incorrect") {
-    errors.password = "Username not found or password incorrcet";
-  }
-
-  console.log(errors);
-}
-
 // login
 export async function login(req, res) {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ where: { username } });
+    const user = await User.findOne({ username });
 
     if (!user) {
-      res.status(500).json({ message: "Username not found" });
+      return res.status(404).json({ message: "Username not found" });
     } else {
       const auth = await bcrypt.compare(password, user.password);
 
       if (!auth) {
-        res.status(500).res.json({ message: "Password incorrect not found" });
+        return res.status(401).json({ message: "Password incorrect" });
       } else {
         const token = createSecretToken(user._id);
 
@@ -43,13 +26,15 @@ export async function login(req, res) {
           maxAge: maxAge * 1000,
         });
 
-        res.status(201).json({ message: "User logged in successfully", success: true, user });
+        return res
+          .status(201)
+          .json({ message: "User logged in successfully", success: true, user });
       }
     }
   } catch (error) {
-    // const err = handleErrors(error);
-    console.log(error);
-    res.status(500).json({ message: "User cant login" });
+    // Handle other errors or log them
+    console.error(error);
+    return res.status(500).json({ message: "User can't login" });
   }
 }
 

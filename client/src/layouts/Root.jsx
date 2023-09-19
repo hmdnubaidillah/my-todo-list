@@ -21,7 +21,7 @@ export default function Home() {
     <main>
       <nav className="fixed w-full">
         <div className="w-[90%] m-auto flex justify-between items-center py-4">
-          <h1>Navbar</h1>
+          <h1 className="font-semibold text-2xl">MyTodo</h1>
           <div className="flex gap-5">
             <NavLink to="/" className="font-semibold cursor-pointer hover:underline">
               Home

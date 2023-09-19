@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useCookies } from "react-cookie";
-import { redirect, useNavigate } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [viewPasword, setViewPassword] = useState(false);
@@ -26,12 +26,13 @@ export default function Signup() {
       });
       const res = await data.json();
 
+      console.log(res);
+
       const { success, message } = res;
+      console.log(success, message);
 
       localStorage.setItem("user", res.user.username);
       if (success) navigate("/");
-
-      console.log(res);
     } catch (error) {
       console.error(error);
     }
